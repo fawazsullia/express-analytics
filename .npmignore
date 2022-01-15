@@ -1,0 +1,5 @@
+node_modules
+tasks.md
+README.md
+tsconfig.js
+dev/*
