@@ -1,5 +1,5 @@
 {
-  "name": "express-analytics",
+  "name": "express-request-analytics",
   "version": "0.1.0",
   "description": "A simple analytics middleware for express that writes to mongoDb",
   "main": "build/index.js",
