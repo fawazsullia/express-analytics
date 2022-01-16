@@ -24,10 +24,10 @@ To install express, use the command
 Details about express [here](https://www.npmjs.com/package/express)
 
 To install the package, use command 
-`npm install express-analytics`
+`npm install express-request-analytics`
 
 Require the package in your server
-`const expressAnalytics = require('express-analytics)`
+`const expressAnalytics = require('express-request-analytics)`
 
 Add the package as a middleware
 `app.use(expressAnalytics(options))`
