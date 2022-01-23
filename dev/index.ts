@@ -64,14 +64,13 @@ function expressAnalytics({ cb }) {
               // The whole response has been received. Print out the result.
               resp.on("end", () => {
                 output = JSON.parse(data);
+                return output;
               });
             }
           )
           .on("error", (err: any) => {
-            output = output;
-            console.log(err);
+            return output
           });
-        return output;
       } else {
         return output;
       }
