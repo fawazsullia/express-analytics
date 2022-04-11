@@ -1,7 +1,7 @@
 function expressAnalytics({ cb }) {
   const http = require("http");
 
-  return function (req: any, res: any, next: Function) {
+  return async function (req: any, res: any, next: Function) {
     //defining variables for better readability
     let userAgent: string = req.headers["user-ugent"];
     let regexMobi = /.*(mobi).*/gi;
@@ -10,7 +10,8 @@ function expressAnalytics({ cb }) {
     let regexIphone = /.*(iPhone).*/gi;
     let regexWinPhone = /.*(Windows Phone).*/gi;
     let regexIPad = /.*(iPad).*/gi;
-    let ip: string = req.socket.remoteAddress;
+    // let ip: string = req.socket.remoteAddress;
+    let ip = "86.97.149.62"
 
     //track non unique hits
     let nonUniqueHits: Number = 1;
@@ -76,7 +77,7 @@ function expressAnalytics({ cb }) {
       }
     }
 
-    let geoDetails = getGeographicInfo();
+    let geoDetails = await getGeographicInfo();
 
     //* callback is called here. The function definition for the callback is made in the server. The parameters can be
     //stored in a databased
