@@ -1,95 +1,46 @@
 function expressAnalytics({ cb }) {
   const http = require("http");
+  const fetchRequest = require("./fetchRequest");
+  const getDeviceType = require("./getDeviceType")
 
   return async function (req: any, res: any, next: Function) {
     //defining variables for better readability
     let userAgent: string = req.headers["user-ugent"];
-    let regexMobi = /.*(mobi).*/gi;
-    let regexMini = /.*(mini).*/gi;
-    let regexAndroid = /.*(android).*/gi;
-    let regexIphone = /.*(iPhone).*/gi;
-    let regexWinPhone = /.*(Windows Phone).*/gi;
-    let regexIPad = /.*(iPad).*/gi;
+   
     // let ip: string = req.socket.remoteAddress;
-    let ip = "86.97.149.62"
+    let ip = "86.97.149.62";
+    let address = `http://ip-api.com/json/${ip}?fields=16649`;
 
     //track non unique hits
     let nonUniqueHits: Number = 1;
 
-    //* recognise the device: mobile or tab or desktop
-    //if the useragent has "mobi" or "mini" (opera) in it, it is mobile
-    function getDeviceType(): string {
-      if (regexMobi.test(userAgent) || regexMini.test(userAgent)) {
-        return "Mobile";
-      } else {
-        if (
-          regexAndroid.test(userAgent) &&
-          regexIPad.test(userAgent) &&
-          !regexMobi.test(userAgent)
-        ) {
-          return "Tablet";
-        } else {
-          return "Desktop or Other";
-        }
-      }
-    }
+    //* recognise the device: mobile or tab or desktop  
 
-    let deviceType: string = getDeviceType();
+    let deviceType: string = getDeviceType(userAgent);
 
-    //* get the geographic location of the request
-    //using a third party api for this
-    interface geo {
-      country: String;
-      regionName: String;
-      timeZone: String;
-    }
+    //get geographic info:  current : country, region, timezone
 
-    function getGeographicInfo(): geo {
-      let output: geo = {
-        country: "No data",
-        regionName: "No data",
-        timeZone: "No data",
-      };
-
-      if (ip) {
-        http
-          .get(
-            `http://ip-api.com/json/${ip}?fields=country,regionName,timeZone`,
-            (resp: any) => {
-              let data = "";
-
-              resp.on("data", (chunk: any) => {
-                data += chunk;
-              });
-
-              // The whole response has been received. Print out the result.
-              resp.on("end", () => {
-                output = JSON.parse(data);
-                return output;
-              });
-            }
-          )
-          .on("error", (err: any) => {
-            return output
-          });
-      } else {
-        return output;
+    async function getGeographicInfo() {
+      try {
+        const resp = await fetchRequest(address);
+        return resp;
+      } catch (e) {
+        return e;
       }
     }
 
     let geoDetails = await getGeographicInfo();
 
     //* callback is called here. The function definition for the callback is made in the server. The parameters can be
-    //stored in a databased
+    //stored in a database
     cb(
       nonUniqueHits,
       deviceType,
       geoDetails.country,
       geoDetails.regionName,
-      geoDetails.timeZone
+      geoDetails.timezone
     );
 
-    //* proceed to the next middleware
     next();
   };
 }
