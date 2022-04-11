@@ -16,8 +16,7 @@ function expressAnalytics({ cb }) {
         return __awaiter(this, void 0, void 0, function* () {
             //defining variables for better readability
             let userAgent = req.headers["user-ugent"];
-            // let ip: string = req.socket.remoteAddress;
-            let ip = "86.97.149.62";
+            let ip = req.socket.remoteAddress;
             let address = `http://ip-api.com/json/${ip}?fields=16649`;
             //track non unique hits
             let nonUniqueHits = 1;
