@@ -33,8 +33,8 @@ class UserCache {
         }
     }
 }
-// const cache = new UserCache(86400000)
-const cache = new UserCache(2000);
+const cache = new UserCache(86400000);
+// const cache = new UserCache(2000)
 function getUniqueHits(ip) {
     let unique = cache.checkUnique(ip);
     return unique;
