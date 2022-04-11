@@ -2,6 +2,7 @@ function expressAnalytics({ cb }) {
   const http = require("http");
   const fetchRequest = require("./fetchRequest");
   const getDeviceType = require("./getDeviceType")
+  const getUniqueHits = require("./getUniqueHits")
 
   return async function (req: any, res: any, next: Function) {
     //defining variables for better readability
@@ -11,7 +12,10 @@ function expressAnalytics({ cb }) {
     let address = `http://ip-api.com/json/${ip}?fields=16649`;
 
     //track non unique hits
-    let nonUniqueHits: Number = 1;
+    let nonUniqueHits: number = 1;
+
+    //track unique hits : 1 day gap
+    let uniqueHit : number = getUniqueHits(ip)
 
     //* recognise the device: mobile or tab or desktop  
 
@@ -34,6 +38,7 @@ function expressAnalytics({ cb }) {
     //stored in a database
     cb(
       nonUniqueHits,
+      uniqueHit,
       deviceType,
       geoDetails.country,
       geoDetails.regionName,

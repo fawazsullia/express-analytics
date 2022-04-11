@@ -19,10 +19,11 @@ class UserCache {
     }
     checkUnique(ip) {
         if (ip in this.data) {
-            if (new Date().getTime() - this.data[ip]["initTime"] < this.ttl) {
+            if (new Date().getTime() - this.data[ip]["initTime"] <= this.ttl) {
                 return 0;
             }
             else {
+                this.data[ip]["initTime"] = new Date().getTime();
                 return 1;
             }
         }
@@ -32,7 +33,8 @@ class UserCache {
         }
     }
 }
-const cache = new UserCache(86400000);
+// const cache = new UserCache(86400000)
+const cache = new UserCache(2000);
 function getUniqueHits(ip) {
     let unique = cache.checkUnique(ip);
     return unique;

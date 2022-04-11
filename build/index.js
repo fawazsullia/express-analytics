@@ -12,6 +12,7 @@ function expressAnalytics({ cb }) {
     const http = require("http");
     const fetchRequest = require("./fetchRequest");
     const getDeviceType = require("./getDeviceType");
+    const getUniqueHits = require("./getUniqueHits");
     return function (req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             //defining variables for better readability
@@ -20,6 +21,8 @@ function expressAnalytics({ cb }) {
             let address = `http://ip-api.com/json/${ip}?fields=16649`;
             //track non unique hits
             let nonUniqueHits = 1;
+            //track unique hits : 1 day gap
+            let uniqueHit = getUniqueHits(ip);
             //* recognise the device: mobile or tab or desktop  
             let deviceType = getDeviceType(userAgent);
             //get geographic info:  current : country, region, timezone
@@ -37,7 +40,7 @@ function expressAnalytics({ cb }) {
             let geoDetails = yield getGeographicInfo();
             //* callback is called here. The function definition for the callback is made in the server. The parameters can be
             //stored in a database
-            cb(nonUniqueHits, deviceType, geoDetails.country, geoDetails.regionName, geoDetails.timezone);
+            cb(nonUniqueHits, uniqueHit, deviceType, geoDetails.country, geoDetails.regionName, geoDetails.timezone);
             next();
         });
     };

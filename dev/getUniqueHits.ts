@@ -1,7 +1,7 @@
 
 
 interface UC {
-    data : any,
+    data : {},
     ttl : number,
     addEntry : (ip : string) => void,
     checkUnique : (ip : string)=> 1 | 0
@@ -30,10 +30,11 @@ class UserCache implements UC {
 
     checkUnique(ip : string){
         if(ip in this.data){
-            if(new Date().getTime() - this.data[ip]["initTime"] < this.ttl){
+            if(new Date().getTime() - this.data[ip]["initTime"] <= this.ttl){
                 return 0
             }
             else {
+                this.data[ip]["initTime"] = new Date().getTime()
                 return 1
             }
         }
@@ -44,12 +45,11 @@ class UserCache implements UC {
 
     }
 
-    //I can list users
-    //then I can check the ttl and first logged time
-    //check difference
 }
 
 const cache = new UserCache(86400000)
+// const cache = new UserCache(2000)
+
 
 function getUniqueHits(ip : string){
 let unique = cache.checkUnique(ip)
