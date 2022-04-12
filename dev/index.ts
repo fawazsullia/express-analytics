@@ -3,6 +3,7 @@ function expressAnalytics({ cb }) {
   const fetchRequest = require("./fetchRequest");
   const getDeviceType = require("./getDeviceType")
   const getUniqueHits = require("./getUniqueHits")
+  const getHits = require("./getHits")
 
   return async function (req: any, res: any, next: Function) {
     //defining variables for better readability
@@ -12,7 +13,7 @@ function expressAnalytics({ cb }) {
     let address = `http://ip-api.com/json/${ip}?fields=16649`;
 
     //track non unique hits
-    let nonUniqueHits: number = 1;
+    let nonUniqueHits: number = getHits(ip);
 
     //track unique hits : 1 day gap
     let uniqueHit : number = getUniqueHits(ip)

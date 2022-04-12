@@ -13,15 +13,15 @@ function expressAnalytics({ cb }) {
     const fetchRequest = require("./fetchRequest");
     const getDeviceType = require("./getDeviceType");
     const getUniqueHits = require("./getUniqueHits");
+    const getHits = require("./getHits");
     return function (req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             //defining variables for better readability
             let userAgent = req.headers["user-ugent"];
-            // let ip: string = req.socket.remoteAddress;
-            let ip = "86.97.149.62";
+            let ip = req.socket.remoteAddress;
             let address = `http://ip-api.com/json/${ip}?fields=16649`;
             //track non unique hits
-            let nonUniqueHits = 1;
+            let nonUniqueHits = getHits(ip);
             //track unique hits : 1 day gap
             let uniqueHit = getUniqueHits(ip);
             //* recognise the device: mobile or tab or desktop  
