@@ -6,6 +6,9 @@ function expressAnalytics({ cb }) {
   const getHits = require("./getHits")
 
   return async function (req: any, res: any, next: Function) {
+
+    
+
     //defining variables for better readability
     let userAgent: string = req.headers["user-ugent"];
    
