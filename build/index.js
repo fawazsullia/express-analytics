@@ -16,6 +16,7 @@ function expressAnalytics({ cb }) {
     const getHits = require("./getHits");
     return function (req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.path);
             //defining variables for better readability
             let userAgent = req.headers["user-ugent"];
             let ip = req.socket.remoteAddress;
@@ -34,7 +35,11 @@ function expressAnalytics({ cb }) {
                         return resp;
                     }
                     catch (e) {
-                        return e;
+                        return {
+                            country: "No data",
+                            region: "No data",
+                            timezone: "No data"
+                        };
                     }
                 });
             }

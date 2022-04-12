@@ -7,7 +7,11 @@ function expressAnalytics({ cb }) {
 
   return async function (req: any, res: any, next: Function) {
 
-    
+    const path = req.path
+    //apis and styles and script should not trigger this
+    // function checkExcludePaths(){
+    //     excludedPaths.
+    // }    
 
     //defining variables for better readability
     let userAgent: string = req.headers["user-ugent"];
@@ -32,7 +36,11 @@ function expressAnalytics({ cb }) {
         const resp = await fetchRequest(address);
         return resp;
       } catch (e) {
-        return e;
+        return {
+          country : "No data",
+          region : "No data",
+          timezone : "No data"
+        };
       }
     }
 
