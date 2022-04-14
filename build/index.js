@@ -16,10 +16,15 @@ function expressAnalytics({ cb }) {
     const getHits = require("./getHits");
     return function (req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(req.path);
+            const path = req.path;
+            //apis and styles and script should not trigger this
+            // function checkExcludePaths(){
+            //     excludedPaths.
+            // }    
             //defining variables for better readability
             let userAgent = req.headers["user-ugent"];
-            let ip = req.socket.remoteAddress;
+            // let ip: string = req.socket.remoteAddress;
+            let ip = "86.97.149.62";
             let address = `http://ip-api.com/json/${ip}?fields=16649`;
             //track non unique hits
             let nonUniqueHits = getHits(ip);
@@ -46,7 +51,7 @@ function expressAnalytics({ cb }) {
             let geoDetails = yield getGeographicInfo();
             //* callback is called here. The function definition for the callback is made in the server. The parameters can be
             //stored in a database
-            cb(nonUniqueHits, uniqueHit, deviceType, geoDetails.country, geoDetails.regionName, geoDetails.timezone);
+            cb(nonUniqueHits, uniqueHit, deviceType, geoDetails.country || "No data", geoDetails.regionName || "No data", geoDetails.timezone || "No data");
             next();
         });
     };
