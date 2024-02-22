@@ -63,3 +63,5 @@ The ideal use case is to write to a database ( table based is better ) or write 
 
 
 ## Note: The package has not been tested. Please use at your own risk
+
+## This package is not maintained anymore. 
